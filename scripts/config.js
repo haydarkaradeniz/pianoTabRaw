@@ -1,0 +1,1 @@
+var config = { "maxColCount": 30, "maxRowCount": 5, "lineCount": 4 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Tablature App (Raw)</title>
+    <!--script src="https://unpkg.com/vue@next"></script-->
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script-->
+    <script src="scripts/vue.global.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/> 
+    <link rel="shortcut icon" href="#">
+  </head>
+  <body>
+    
+    <div id="app">
+
+      <div style="text-align: center;">
+        <span class="title">{{tab.name}}</span>
+        <img src="images\backward.svg" class="pointer" @click="previousPage"/>
+        <span class="title">{{currentPage + ' / ' + maxPage}}  </span>
+        <img src="images\forward.svg" class="pointer" @click="nextPage"/>
+      </div>
+
+
+      <table v-for="(rowIndex, index) in Array.from(Array(getRowCount(currentPage)).keys())">
+        <tr>
+          <td v-for="(columnIndex, index) in Array.from(Array(getColumnCount(currentPage, rowIndex)).keys())">
+            <div class="box">              
+              <table class="noteTable" v-for="(container, index) in getContainerList(currentPage, rowIndex, columnIndex)">               
+                <tr v-for="(octave, index) in container.octaveList" class="noteLine">
+                  <td class="lineNumber">{{octave}}</td>
+                  <td v-if="octave == container.octaveList[0]" :rowspan="lineCount" class="lineSeperator"></td>
+                  <!--td class="noteCell" v-for="(note, index) in container.noteList">{{note[octave]}}</td-->    
+                  <td class="noteCell" v-for="(noteIndex, index) in Array.from(Array(container.t2-container.t1+1).keys())">{{container.noteList[container.t1+noteIndex][octave]}}</td>               
+                </tr>
+
+                <tr v-for="(x, index) in Array.from(Array(lineCount-container.octaveList.length).keys())">
+                  <td class="lineNumber">-</td>
+                  <td :colspan="container.t2-container.t1+1"></td>
+                </tr>
+
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <span v-for="(rowIndex, index) in Array.from(Array(getRowCount(currentPage)).keys())" style="color: white;">
+        r-{{getRowCount(currentPage)}}<span v-for="(columnIndex, index) in Array.from(Array(getColumnCount(currentPage, rowIndex)).keys())" style="color: red;"> c-{{getColumnCount(currentPage, rowIndex)}}
+        <span v-for="(container, index) in getContainerList(currentPage, rowIndex, columnIndex)" style="color: yellow;">n-{{container.octaveList + ' ' + container.t1 + ' ' + container.t2}}</span>
+        </span>
+      </span>
+
+
+  
+
+
+      
+    
+      
+     
+   </div>        
+    
+    <script src="scripts/midi.js"></script>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+
+  </body>
+</html>
