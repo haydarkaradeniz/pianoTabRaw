@@ -14,6 +14,14 @@ body {
     background: lightgoldenrodyellow;
   }
 
+  .box_solid {
+    border: black 1px solid;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    background: lightgoldenrodyellow;
+  }
+
 
   .lineNumber {
     width: 20px;
@@ -31,6 +39,7 @@ body {
     
   }
 
+  
   .noteLine {
     height: 25px;
     font-size: 18px;
@@ -52,4 +61,16 @@ body {
     padding-left: 15px;
     position: relative;
     top: -10px;
+  }
+
+  .indexLine {
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .indexCell {
+    width: 25px;
+    text-wrap: nowrap;   
+    color:rgb(30, 51, 88);
+    /*writing-mode: vertical-rl;    */
   }

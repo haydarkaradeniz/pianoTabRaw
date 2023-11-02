@@ -15,27 +15,31 @@
     
     <div id="app">
 
-      <div style="text-align: center;">
+      <div style="text-align: center;" v-if="!printerMode">
         <span class="title">{{tab.name}}</span>
         <img src="images\backward.svg" class="pointer" @click="previousPage"/>
         <span class="title">{{currentPage + ' / ' + maxPage}}  </span>
         <img src="images\forward.svg" class="pointer" @click="nextPage"/>
+        <img src="images\printer.svg" class="pointer" @click="printerMode=!printerMode" style="float: right;"/>
       </div>
 
 
-      <table v-for="(rowIndex, index) in Array.from(Array(getRowCount(currentPage)).keys())">
+      <table v-for="(rowIndex, index1) in Array.from(Array(getRowCount(currentPage)).keys())">
         <tr>
-          <td v-for="(columnIndex, index) in Array.from(Array(getColumnCount(currentPage, rowIndex)).keys())">
-            <div class="box">              
-              <table class="noteTable" v-for="(container, index) in getContainerList(currentPage, rowIndex, columnIndex)">               
+          <td v-for="(columnIndex, index2) in Array.from(Array(getColumnCount(currentPage, rowIndex)).keys())">
+            <div :class="printerMode?'box_solid':'box'">              
+              <table class="noteTable" v-for="(container, index3) in getContainerList(currentPage, rowIndex, columnIndex)">      
+                <tr class="indexLine">
+                  <td colspan="2"></td>
+                  <td class="indexCell" v-for="(noteIndex, index4) in Array.from(Array(container.t2-container.t1+1).keys())">{{getPageNoteIndex(currentPage,rowIndex,columnIndex, index4)}}</td>                         
+                </tr>         
                 <tr v-for="(octave, index) in container.octaveList" class="noteLine">
                   <td class="lineNumber">{{octave}}</td>
                   <td v-if="octave == container.octaveList[0]" :rowspan="lineCount" class="lineSeperator"></td>
-                  <!--td class="noteCell" v-for="(note, index) in container.noteList">{{note[octave]}}</td-->    
-                  <td class="noteCell" v-for="(noteIndex, index) in Array.from(Array(container.t2-container.t1+1).keys())">{{container.noteList[container.t1+noteIndex][octave]}}</td>               
+                  <td class="noteCell" v-for="(noteIndex, index5) in Array.from(Array(container.t2-container.t1+1).keys())">{{container.noteList[container.t1+noteIndex][octave]}}</td>               
                 </tr>
 
-                <tr v-for="(x, index) in Array.from(Array(lineCount-container.octaveList.length).keys())">
+                <tr v-for="(x, index6) in Array.from(Array(lineCount-container.octaveList.length).keys())">
                   <td class="lineNumber">-</td>
                   <td :colspan="container.t2-container.t1+1"></td>
                 </tr>

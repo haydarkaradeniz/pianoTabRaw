@@ -1,7 +1,7 @@
 
 /**
  * 
- * farklı octave sayıları arasında geçiş yaparken, maxLine'dan az bir octave ile geçiş yapılabilir, - ile maxLine'a tamamla
+ * commit 01.11.23 001
  * 
  */
 const app = Vue.createApp({
@@ -16,8 +16,9 @@ const app = Vue.createApp({
       maxPage : undefined,
       orderedContainerTArray : [],
       tCount : undefined,
-      dummyNoteArray : [], //silinecek
-      dummyNoteArray2 : [], //silinecek
+      printerMode : false,
+      pageNoteIndex : 1,
+      pageNoteIndexMap : {},
     };
   },
   beforeMount() {
@@ -28,14 +29,17 @@ const app = Vue.createApp({
     this.initNoteMap();
   },
   mounted() {        
-    for(var i=0; i<this.maxColCount; i++) {
-      this.dummyNoteArray.push(i % 8);
-    }
-    for(var i=0; i<this.maxColCount/2; i++) {
-      this.dummyNoteArray2.push(i % 8);
-    }
   },
   methods: {
+
+    getPageNoteIndex(currentPage,rowIndex,columnIndex,noteIndex){
+      var id = currentPage+'_'+rowIndex+'_'+columnIndex+'_'+noteIndex;
+      if(!this.pageNoteIndexMap[id]) {
+        this.pageNoteIndexMap[id] = this.pageNoteIndex;
+        this.pageNoteIndex+=1;
+      }
+      return this.pageNoteIndexMap[id];
+    },
 
     initNoteMap() {
 
